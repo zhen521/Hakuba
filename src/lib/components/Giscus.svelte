@@ -6,11 +6,14 @@
 </script>
 
 {#if config.comment ?? COMMENT}
-	<div class="h-16" />
+	<div class="h-16"></div>
 
 	<Giscus
+		id="giscus-comments"
 		repo={`${USER_NAME}/${REPOSITORY}`}
 		repoId=""
+		category="General"
+		categoryId=""
 		mapping="number"
 		term={`${config.number}`}
 		reactionsEnabled="1"

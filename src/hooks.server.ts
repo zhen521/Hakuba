@@ -4,16 +4,17 @@ import { fetchPage } from '$lib/helper/fetchPage';
 import { fetchPost } from '$lib/helper/fetchPosts';
 
 const getLang = async ({
-	routeId,
+	route,
 	params
 }: {
-	routeId: string | null;
+	route: { id: string | null };
 	params: Record<string, string>;
 }) => {
-	if (routeId === 'posts/[post]@withoutHeader') {
+	const id = route.id;
+	if (id === 'post/[post]@withoutHeader') {
 		return (await fetchPost(params.post))?.metadata.lang ?? LANGUAGE;
 	}
-	if (routeId === '[page]') {
+	if (id === '[page]') {
 		return (await fetchPage(params.page))?.metadata.lang ?? LANGUAGE;
 	}
 
@@ -21,8 +22,13 @@ const getLang = async ({
 };
 
 export const handle: Handle = async ({ event, resolve }) => {
+	let lang: string | undefined;
+
 	const response = await resolve(event, {
-		transformPage: async ({ html }) => html.replace('%lang%', await getLang(event))
+		transformPageChunk: async ({ html }) => {
+			if (!lang) lang = await getLang(event);
+			return html.replace('%lang%', lang ?? LANGUAGE);
+		}
 	});
 	return response;
 };

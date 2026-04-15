@@ -6,19 +6,23 @@
 	const build = (current: number, total: number) => {
 		if (total === 0) return [];
 
-		let arr: (string | number)[] = Array.from({ length: 3 }, (_, i) => i + current - 1).filter(
+		const pages = Array.from({ length: 3 }, (_, i) => i + current - 1).filter(
 			(e) => e > 0 && e <= total
 		);
 
-		if (arr[0] > 2) {
+		let arr: (string | number)[] = pages;
+
+		const first = pages[0];
+		if (first > 2) {
 			arr = [1, '...', ...arr];
-		} else if (arr[0] !== 1) {
+		} else if (first !== 1) {
 			arr = [1, ...arr];
 		}
 
-		if (arr[arr.length - 1] < total - 1) {
+		const last = pages[pages.length - 1];
+		if (last < total - 1) {
 			arr = [...arr, '...', total];
-		} else if (arr[arr.length - 1] !== total) {
+		} else if (last !== total) {
 			arr = [...arr, total];
 		}
 
@@ -45,7 +49,7 @@
 
 <nav class="mt-8 flex flex-row items-center gap-1 self-center child:p-2">
 	{#if hasPrev}
-		<a sveltekit:prefetch href={to(currentPage - 1)}>
+		<a data-sveltekit-preload-data href={to(currentPage - 1)}>
 			<img src={chevronLeft} alt="Previous" width="6" height="6" />
 		</a>
 	{/if}
@@ -54,7 +58,7 @@
 			<span>...</span>
 		{/if}
 		{#if typeof e === 'number'}
-			<a sveltekit:prefetch href={to(e)}>
+			<a data-sveltekit-preload-data href={to(e)}>
 				<span class={clsx('border-b border-transparent', currentPage === e && 'border-slate-900')}>
 					{e}
 				</span>
@@ -62,7 +66,7 @@
 		{/if}
 	{/each}
 	{#if hasNext}
-		<a sveltekit:prefetch href={to(currentPage + 1)}>
+		<a data-sveltekit-preload-data href={to(currentPage + 1)}>
 			<img src={chevronRight} alt="Next" width="6" height="6" />
 		</a>
 	{/if}

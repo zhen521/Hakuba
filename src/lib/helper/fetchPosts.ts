@@ -1,5 +1,10 @@
 import type Post from '$lib/types/post';
-import type { SvelteComponent } from 'svelte';
+import type { Component } from 'svelte';
+
+interface PostModule {
+	metadata: Post;
+	default: Component;
+}
 
 export const fetchPosts = async ({
 	offset,
@@ -8,13 +13,15 @@ export const fetchPosts = async ({
 }: { offset?: number; limit?: number; label?: string } = {}) => {
 	let allPosts = (
 		await Promise.all(
-			Object.entries(import.meta.glob('../../routes/post/_source/*.md')).map(async ([, page]) => {
-				const { metadata, default: component } = await page();
-				return {
-					metadata: metadata as Post,
-					component: component as SvelteComponent
-				};
-			})
+			Object.entries(import.meta.glob<PostModule>('../../routes/post/_source/*.md')).map(
+				async ([, page]) => {
+					const { metadata, default: component } = await page();
+					return {
+						metadata,
+						component
+					};
+				}
+			)
 		)
 	).sort(
 		(a, b) => new Date(b.metadata.published).valueOf() - new Date(a.metadata.published).valueOf()
@@ -49,10 +56,13 @@ export const fetchLabels = async () => {
 		.flat(Infinity) as string[];
 
 	const labels = Object.entries(
-		flatted.reduce((acc, cur) => {
-			acc[cur] = (acc[cur] ?? 0) + 1;
-			return acc;
-		}, {} as { [index: string]: number })
+		flatted.reduce(
+			(acc, cur) => {
+				acc[cur] = (acc[cur] ?? 0) + 1;
+				return acc;
+			},
+			{} as Record<string, number>
+		)
 	);
 
 	return labels.sort((a, b) => b[1] - a[1]);

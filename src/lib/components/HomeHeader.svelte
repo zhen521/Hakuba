@@ -8,6 +8,6 @@
 </script>
 
 <header class="mb-8">
-	<a sveltekit:prefetch href="/" class="inline-block"><Header>{BLOG_NAME}</Header></a>
+	<a data-sveltekit-preload-data href="/" class="inline-block"><Header>{BLOG_NAME}</Header></a>
 	<Nav {pages} class="divide-slate-600 text-slate-600" />
 </header>

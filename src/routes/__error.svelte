@@ -1,6 +1,6 @@
 <script context="module" lang="ts">
 	import type { Load } from '@sveltejs/kit';
-	import type { SvelteComponent } from 'svelte';
+	import type { Component } from 'svelte';
 	import Giscus from '$lib/components/Giscus.svelte';
 	import type Page from '$lib/types/page';
 	import PageMeta from '$lib/components/PageMeta.svelte';
@@ -9,16 +9,14 @@
 		const { default: component, metadata } = await import('./_page/__error.md');
 
 		return {
-			props: {
-				component,
-				metadata
-			}
+			component,
+			metadata
 		};
 	};
 </script>
 
 <script lang="ts">
-	export let component: SvelteComponent;
+	export let component: Component;
 	export let metadata: Page;
 </script>
 

@@ -9,9 +9,7 @@
 	export const load: Load = async ({ params }) => {
 		const pages = await fetchPages();
 		return {
-			props: {
-				pages: pages.map(({ metadata }) => metadata)
-			}
+			pages: pages.map(({ metadata }) => metadata)
 		};
 	};
 </script>

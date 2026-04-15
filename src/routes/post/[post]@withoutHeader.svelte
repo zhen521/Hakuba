@@ -1,6 +1,6 @@
 <script context="module" lang="ts">
 	import type { Load } from '@sveltejs/kit';
-	import type { SvelteComponent } from 'svelte';
+	import type { Component } from 'svelte';
 	import Header from '$lib/components/Header.svelte';
 	import type Post from '$lib/types/post';
 	import Article from '$lib/components/Article.svelte';
@@ -10,12 +10,13 @@
 	import BackButton from '$lib/components/BackButton.svelte';
 	import Giscus from '$lib/components/Giscus.svelte';
 	import PageMeta from '$lib/components/PageMeta.svelte';
+	import { error } from '@sveltejs/kit';
 
 	export const load: Load = async ({ params }) => {
 		try {
 			const post = await fetchPost(params.post);
 			if (!post) {
-				throw new Error('Post not found');
+				throw error(404, 'Post not found');
 			}
 
 			const metadata = post.metadata;
@@ -23,21 +24,20 @@
 			const timezone = metadata.timezone;
 
 			return {
-				props: {
-					...post,
-					labels: metadata.labels?.map(({ name }) => name),
-					published: readableDate(metadata.published, timezone),
-					updated: metadata.updated ? readableDate(metadata.updated, timezone) : undefined
-				}
+				...post,
+				labels: metadata.labels?.map(({ name }) => name),
+				published: readableDate(metadata.published, timezone),
+				updated: metadata.updated ? readableDate(metadata.updated, timezone) : undefined
 			};
-		} catch {
-			return { status: 404 };
+		} catch (e: any) {
+			if (e.status === 404) throw e;
+			throw error(500, e.message);
 		}
 	};
 </script>
 
 <script lang="ts">
-	export let component: SvelteComponent;
+	export let component: Component;
 	export let metadata: Post;
 	export let labels: string[] | undefined;
 	export let published: string | undefined;

@@ -14,7 +14,7 @@
 		<li class="flex flex-row items-center gap-6">
 			<div class="shrink-0 text-slate-500">{readableDate(post.published)}</div>
 			<a
-				sveltekit:prefetch
+				data-sveltekit-preload-data
 				class="truncate py-1 underline"
 				href={`/post/${post.path || post.number}`}>{post.title}</a
 			>

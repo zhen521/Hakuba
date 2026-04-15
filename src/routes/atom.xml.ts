@@ -1,13 +1,11 @@
 import { fetchPosts } from '$lib/helper/fetchPosts';
 import { Feed } from 'feed';
 import { BIO, BLOG_NAME, DOMAIN, EMAIL, USER_NAME } from '$lib/constants';
+import { redirect } from '@sveltejs/kit';
 
-export const get = async () => {
+export const GET = async () => {
 	if (!DOMAIN) {
-		return {
-			status: 302,
-			redirect: '/'
-		};
+		throw redirect(302, '/');
 	}
 	const posts = await fetchPosts();
 	const last = posts.list.sort(
@@ -40,10 +38,9 @@ export const get = async () => {
 			category: metadata.labels
 		});
 	});
-	return {
+	return new Response(feed.atom1(), {
 		headers: {
 			'Content-Type': 'application/xml'
-		},
-		body: feed.atom1()
-	};
+		}
+	});
 };

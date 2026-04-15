@@ -15,16 +15,16 @@
 		)}
 	>
 		<li>
-			<a sveltekit:prefetch href="/">Home</a>
+			<a data-sveltekit-preload-data href="/">Home</a>
 		</li>
 		{#each pages || [] as { title, path } (title)}
 			<li>
-				<a sveltekit:prefetch href={`/${path || title?.toLowerCase()}`}>{title}</a>
+				<a data-sveltekit-preload-data href={`/${path || title?.toLowerCase()}`}>{title}</a>
 			</li>
 		{/each}
 		{#if DOMAIN}
 			<li>
-				<a sveltekit:prefetch target="_blank" href="/atom.xml">Feed</a>
+				<a data-sveltekit-preload-data target="_blank" href="/atom.xml">Feed</a>
 			</li>
 		{/if}
 	</ul>

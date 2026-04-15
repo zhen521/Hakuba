@@ -3,9 +3,9 @@
 	import Github from '$lib/components/Github.svelte';
 	import Twitter from '$lib/components/Twitter.svelte';
 	import { BIO, EMAIL, GITHUB_URL, TWITTER } from '$lib/constants';
+	import type { Component } from 'svelte';
 
-	// todo specify type
-	let components: unknown[] = [];
+	let components: Component[] = [];
 
 	GITHUB_URL && components.push(Github);
 	TWITTER && components.push(Twitter);

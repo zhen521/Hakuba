@@ -35,15 +35,13 @@
 		};
 
 		return {
-			props: {
-				selected: label,
-				labels,
-				posts: list.map(({ metadata }) => metadata),
-				totalCount,
-				currentPage,
-				basePath,
-				title: buildTitle(label, currentPage)
-			}
+			selected: label,
+			labels,
+			posts: list.map(({ metadata }) => metadata),
+			totalCount,
+			currentPage,
+			basePath,
+			title: buildTitle(label, currentPage)
 		};
 	};
 </script>
