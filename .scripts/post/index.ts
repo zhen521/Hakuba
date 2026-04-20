@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import { createSitemap } from 'svelte-sitemap/src/index.js';
+import { createSitemap } from 'svelte-sitemap/src/index';
 dotenv.config({ path: '.env.local' });
 
 const domain = process.env.VITE_DOMAIN;

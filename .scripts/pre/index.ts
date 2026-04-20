@@ -1,8 +1,8 @@
 import dotenv from 'dotenv';
-import { convertFrontMatter } from './converter.js';
-import { fetchUser, fetchAllDiscussions } from './fetcher.js';
-import { findConfig, filterPage as filterPage, filterPost } from './filter.js';
-import { writePosts, writePages, writeEnv } from './writer.js';
+import { convertFrontMatter } from './converter';
+import { fetchUser, fetchAllDiscussions } from './fetcher';
+import { findConfig, filterPage as filterPage, filterPost } from './filter';
+import { writePosts, writePages, writeEnv } from './writer';
 
 dotenv.config();
 const env = process.env;

@@ -5,10 +5,15 @@ import { DiscussionsType, FetchDiscussionsType, FetchViewerType } from './types'
 dotenv.config();
 
 const fetchData = async <T>(query: string) => {
+	const token = process.env.GITHUB_TOKEN;
+	if (!token) {
+		throw new Error('GitHub Token 未设置，请检查环境变量配置');
+	}
+
 	const res = await fetch('https://api.github.com/graphql', {
 		method: 'POST',
 		headers: {
-			Authorization: `bearer ${process.env.GITHUB_TOKEN}`
+			Authorization: `bearer ${token}`
 		},
 		body: JSON.stringify({ query })
 	});
@@ -17,6 +22,12 @@ const fetchData = async <T>(query: string) => {
 
 	if (json.errors) {
 		throw new Error(JSON.stringify(json.errors, null, 2));
+	}
+
+	if (!json.data) {
+		throw new Error(
+			`GitHub API response missing 'data'. Status: ${res.status} ${res.statusText}. Response: ${JSON.stringify(json)}`
+		);
 	}
 
 	return json.data as T;
